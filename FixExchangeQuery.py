@@ -1,12 +1,17 @@
 #Importing the library
 
 from urllib import request
-import sqlite3
 from datetime import date
 from datetime import datetime
+import os
 from bs4 import BeautifulSoup
 
-# print("Successfully Connected to SQLite")
+
+# If there's a preb query!
+if os.path.exists("QueryList.sql"):
+    os.remove("QueryList.sql")
+else:
+    print("New file created!")
 
 
 # Initializing variable
@@ -34,16 +39,12 @@ today = date.today()
 d1 = today.strftime("%d/%m/%Y")
 sysdate = datetime.strptime(d1, '%d/%m/%Y').date()
 
-
-
 clst = tdata.split()
 eur = clst[15]
 usd = clst[11]
 
 eur = float(eur)
 usd = float(usd)
-
-
 
 def exchange(): 
     print("Date on Website: ",udate)
@@ -54,15 +55,8 @@ def exchange():
     if sysdate > date_object:
         print("Not Updated!")
     else:
-            print("Currency Rate Updated.")    
-    # # Queries to INSERT records.            
-    # Closing the connection
+        print("Currency Rate Updated.")    
     #select VF_CONFIG_CUR_RATES_FUNC ('8','102.00','840','USD to Albanian Lek','14/04/2023') from dual; 
-    print("==================== SQL QUERY ========================================================")
-    print(f"select VF_CONFIG_CUR_RATES_FUNC ('8','{usd}','840','USD to Albanian Lek','{udate}') from dual;") 
-    print(f"select VF_CONFIG_CUR_RATES_FUNC ('8','{eur}','978','EUR to Albanian Lek','{udate}') from dual;")
-    print(f"select * from vf_config_cur_rates_t where effective_date in ('{udate}');") 
-
     usdq=f"select VF_CONFIG_CUR_RATES_FUNC ('8','{usd}','840','USD to Albanian Lek','{udate}') from dual;"
     eurq=f"select VF_CONFIG_CUR_RATES_FUNC ('8','{eur}','978','EUR to Albanian Lek','{udate}') from dual;"
     dateq=f"select * from vf_config_cur_rates_t where effective_date in ('{udate}');"
@@ -71,10 +65,6 @@ def exchange():
     
     with open('QueryList.sql', 'a') as f:
         f.write('\n'.join(queryList))
-    
-    
-    # Get current Date
-
 
 if __name__ == "__main__":
-    exchange() 
+    exchange()
