@@ -8,12 +8,13 @@ OPS_LIMIT = pwhash.OPSLIMIT_MODERATE
 MEM_LIMIT = pwhash.MEMLIMIT_MODERATE
 
 conn = sqlite3.connect('users.db')
-cursor = conn.cursor().execute('''
-CREATE TABLE IF NOT EXISTS users (
-    username VARCHAR(16) PRIMARY KEY,
-    nacl_pwhash VARCHAR(100)
-)
-''')
+
+# cursor = conn.cursor().execute('''
+# CREATE TABLE IF NOT EXISTS users (
+#     username VARCHAR(16) PRIMARY KEY,
+#     nacl_pwhash VARCHAR(100)
+# )
+# ''')
 
 # def create_account(username, password):
 #     '''This function is used to create account in users table.'''
@@ -39,7 +40,7 @@ def login():
     cursor.execute('SELECT nacl_pwhash FROM users WHERE username=?', (username,))
     result = cursor.fetchone()
     if result is None:
-        raise Exception('Invalid username or password')
+        raise ValueError('Invalid username or password')
 
     if result is None:
         # User doesn't exist. Make sure the login is still slow.
@@ -47,7 +48,7 @@ def login():
             opslimit=OPS_LIMIT,
             memlimit=MEM_LIMIT,
         )
-        raise Exception('Invalid username or password')
+        raise ValueError('Invalid username or password')
 
     try:
         pwhash.verify(result[0], bytes(password, 'UTF-8'))
