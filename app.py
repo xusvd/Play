@@ -1,3 +1,4 @@
+'''Importing files for connection to db and password hasing.'''
 import sqlite3
 from nacl import pwhash
 from nacl.exceptions import InvalidkeyError
@@ -15,7 +16,7 @@ CREATE TABLE IF NOT EXISTS users (
 ''')
 
 def create_account(username, password):
-
+    '''This function is used to create account in users table.'''
     cursor = conn.cursor()
     cursor.execute('SELECT count(*) FROM users WHERE username=?', (username,))
     result = cursor.fetchone()
@@ -29,16 +30,18 @@ def create_account(username, password):
     cursor.execute('INSERT INTO users (username, nacl_pwhash) VALUES (?, ?)', (username, hashed))
     conn.commit()
 
+
 def login():
-    username=input(f"Username:")
-    password=input(f"Password:")
+    '''This is the main as after login the FixExchange gets executed!'''
+    username=input("Username:")
+    password=input("Password:")
     cursor = conn.cursor()
     cursor.execute('SELECT nacl_pwhash FROM users WHERE username=?', (username,))
     result = cursor.fetchone()
-    if result == None:
+    if result is None:
         raise Exception('Invalid username or password')
 
-    if result == None:
+    if result is None:
         # User doesn't exist. Make sure the login is still slow.
         pwhash.str(b'',
             opslimit=OPS_LIMIT,
@@ -48,9 +51,9 @@ def login():
 
     try:
         pwhash.verify(result[0], bytes(password, 'UTF-8'))
-    except(InvalidkeyError):
-        raise Exception('Invalid username or password')
-    if result !=None:
+    except Exception as error:
+        raise InvalidkeyError('Invalid Username or Password') from error
+    if result is not None:
         print("Welcome!")
         FixExchangeQuery.exchange()
 
