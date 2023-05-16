@@ -64,6 +64,7 @@ def login():
 # create_account('NehaC','NehaC')
 # create_account('PiyushJ','PiyushJ')
 # create_account('NimeshK','NimeshK')
+# create_account('admin','password')
 
 
 # try:
@@ -73,4 +74,5 @@ def login():
 # except Exception as e:
 #     print(f'Login error: {e}')
 
-login()
+if __name__ == "__main__":
+    login()
