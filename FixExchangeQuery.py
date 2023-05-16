@@ -1,5 +1,4 @@
-#Importing the library
-
+'''Importing some libs'''
 from urllib import request
 from datetime import date
 from datetime import datetime
@@ -46,7 +45,8 @@ usd = clst[11]
 eur = float(eur)
 usd = float(usd)
 
-def exchange(): 
+def exchange():
+    '''This is the main function which generates the sql query.'''
     print("Date on Website: ",udate)
     print("Today\'s date: ",sysdate)
     print("USD :",usd," EUR:",eur)
@@ -59,11 +59,9 @@ def exchange():
     #select VF_CONFIG_CUR_RATES_FUNC ('8','102.00','840','USD to Albanian Lek','14/04/2023') from dual; 
     usdq=f"select VF_CONFIG_CUR_RATES_FUNC ('8','{usd}','840','USD to Albanian Lek','{udate}') from dual;"
     eurq=f"select VF_CONFIG_CUR_RATES_FUNC ('8','{eur}','978','EUR to Albanian Lek','{udate}') from dual;"
-    dateq=f"select * from vf_config_cur_rates_t where effective_date in ('{udate}');"
-    
-    queryList=[usdq,eurq,dateq,'\n']
-    
-    with open('QueryList.sql', 'a') as f:
+    dateq=f"select * from vf_config_cur_rates_t where effective_date in ('{udate}');"    
+    queryList=[usdq,eurq,dateq,'\n']    
+    with open('QueryList.sql', 'a', encoding="utf-8") as f:
         f.write('\n'.join(queryList))
 
 if __name__ == "__main__":
