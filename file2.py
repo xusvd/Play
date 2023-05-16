@@ -15,8 +15,6 @@ CREATE TABLE IF NOT EXISTS users (
 ''')
 
 def create_account(username, password):
-    if len(password) < 8:
-        raise Exception('Password too short')
 
     cursor = conn.cursor()
     cursor.execute('SELECT count(*) FROM users WHERE username=?', (username,))
@@ -57,8 +55,16 @@ def login():
         FixExchangeQuery.exchange()
 
 # Make a couple accounts for demonstration
-# create_account('jim', 'password')
-# create_account('sue', 'another-password')
+# create_account('AtharvaV','AtharvaV')
+# create_account('SubhashK','SubhashK')
+# create_account('DipakS','DipakS')
+# create_account('GopalR','GopalR')
+# create_account('HarishH','HarishH')
+# create_account('SagarP','SagarP')
+# create_account('NehaC','NehaC')
+# create_account('PiyushJ','PiyushJ')
+# create_account('NimeshK','NimeshK')
+
 
 # try:
 #     # Attempt to log in
